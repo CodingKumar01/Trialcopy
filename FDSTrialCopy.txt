@@ -1,0 +1,229 @@
+Open In Colab
+PRACTICAL 1: Data Collection, Modelling and Compilation
+
+my_dict = {
+    'name' : ["a", "b", "c", "d", "e", "f", "g"],
+    'age' : [28, 51, 16, 22, 47, 35, 20],
+    'designation' : ["VP", "CEO", "CFO", "VP", "VP", "CEO", "MD"]
+}
+import pandas as pd
+import numpy as np
+Changing the dictionary into DataFrame:
+
+df=pd.DataFrame(my_dict)
+df
+name	age	designation
+0	a	28	VP
+1	b	51	CEO
+2	c	16	CFO
+3	d	22	VP
+4	e	47	VP
+5	f	35	CEO
+6	g	20	MD
+Changing into csv:
+
+df.to_csv('csv_file')
+df
+name	age	designation
+0	a	28	VP
+1	b	51	CEO
+2	c	16	CFO
+3	d	22	VP
+4	e	47	VP
+5	f	35	CEO
+6	g	20	MD
+Reading the csv file:
+
+df_csv = pd.read_csv('csv_file')
+df_csv
+Unnamed: 0	name	age	designation
+0	0	a	28	VP
+1	1	b	51	CEO
+2	2	c	16	CFO
+3	3	d	22	VP
+4	4	e	47	VP
+5	5	f	35	CEO
+6	6	g	20	MD
+df.to_csv('csv_file', index=False)
+df_csv = pd.read_csv('csv_file')
+df_csv
+name	age	designation
+0	a	28	VP
+1	b	51	CEO
+2	c	16	CFO
+3	d	22	VP
+4	e	47	VP
+5	f	35	CEO
+6	g	20	MD
+Location = 'student-mat.csv'
+dfs=pd.read_csv(Location)   #header=None
+dfs.head()
+school	sex	age	address	famsize	Pstatus	Medu	Fedu	Mjob	Fjob	reason	guardian	traveltime	studytime	failures	schoolsup	famsup	paid	activities	nursery	higher	internet	romantic	famrel	freetime	goout	Dalc	Walc	health	absences	G1	G2	G3
+0	GP	F	18	U	GT3	A	4	4	at_home	teacher	course	mother	2	2	0	yes	no	no	no	yes	yes	no	no	4	3	4	1	1	3	6	5	6	6
+1	GP	F	17	U	GT3	T	1	1	at_home	other	course	father	1	2	0	no	yes	no	no	no	yes	yes	no	5	3	3	1	1	3	4	5	5	6
+2	GP	F	15	U	LE3	T	1	1	at_home	other	other	mother	1	2	3	yes	no	yes	no	yes	yes	yes	no	4	3	2	2	3	3	10	7	8	10
+3	GP	F	15	U	GT3	T	4	2	health	services	home	mother	1	3	0	no	yes	yes	yes	yes	yes	yes	yes	3	2	2	1	1	5	2	15	14	15
+4	GP	F	16	U	GT3	T	3	3	other	other	home	father	1	2	0	no	yes	yes	no	yes	yes	no	no	4	3	2	1	2	5	4	6	10	10
+Using lists:
+
+names = ['Bob', 'Janice', 'Ross', 'Rachel', 'Joey']
+grades = [76,95,77,78,99]
+bscdegree = [1,1,0,0,1]
+mscdegree = [2,1,2,0,0]
+phddegree = [0,1,0,2,0]
+Degrees = zip(names, grades, bscdegree, mscdegree, phddegree)
+columns = ['Names', 'Grades', 'Bsc', 'Msc', 'phD']
+df1 = pd.DataFrame(data = Degrees, columns= columns)
+df1
+Names	Grades	Bsc	Msc	phD
+0	Bob	76	1	2	0
+1	Janice	95	1	1	1
+2	Ross	77	0	2	0
+3	Rachel	78	0	0	2
+4	Joey	99	1	0	0
+Reading excel file:
+
+Location1 = 'gradedata.xlsx'
+df2 = pd.read_excel(Location1)
+
+#changing column names
+df2.columns = ['First', 'Last', 'Sex', 'Age', 'Exer', 'Hrs', 'Grade', 'Address']
+df2.head()
+First	Last	Sex	Age	Exer	Hrs	Grade	Address
+0	Marcia	Pugh	female	17	3	10	82.4	7379 Highland Rd. , Dublin, GA 31021
+1	Kadeem	Morrison	male	18	4	4	78.2	8 Bayport St. , Honolulu, HI 96815
+2	Nash	Powell	male	18	5	9	79.3	Encino, CA 91316, 3 Lilac Street
+3	Noelani	Wagner	female	14	2	7	83.2	Riverview, FL 33569, 9998 North Smith Dr.
+4	Noelani	Cherry	female	18	4	15	87.4	97 SE. Ocean Street , Bethlehem, PA 18015
+Creating excel file:
+
+!pip install xlsxwriter
+
+names = ['Bob', 'Janice', 'Ross', 'Rachel', 'Joey']
+grades = [76,95,77,78,99]
+GradeList = zip(names, grades)
+df3 = pd.DataFrame(data = GradeList, columns=['Names', 'Grades'])
+
+writer = pd.ExcelWriter('gradelist.xlsx', engine='xlsxwriter')
+df3.to_excel(writer, sheet_name='Sheet1')
+writer.save()
+Collecting xlsxwriter
+  Downloading XlsxWriter-3.0.2-py3-none-any.whl (149 kB)
+     |████████████████████████████████| 149 kB 6.9 MB/s 
+Installing collected packages: xlsxwriter
+Successfully installed xlsxwriter-3.0.2
+Reading from sql file:
+
+import sqlite3
+
+#create a SQL connection
+con=sqlite3.connect('portal_mammals.sqlite')
+
+cur=con.cursor()
+
+#the result can be iterated over by row
+for row in cur.execute('SELECT * FROM species;'):
+    print(row)
+
+#close connection
+con.close()
+('AB', 'Amphispiza', 'bilineata', 'Bird')
+('AH', 'Ammospermophilus', 'harrisi', 'Rodent')
+('AS', 'Ammodramus', 'savannarum', 'Bird')
+('BA', 'Baiomys', 'taylori', 'Rodent')
+('CB', 'Campylorhynchus', 'brunneicapillus', 'Bird')
+('CM', 'Calamospiza', 'melanocorys', 'Bird')
+('CQ', 'Callipepla', 'squamata', 'Bird')
+('CS', 'Crotalus', 'scutalatus', 'Reptile')
+('CT', 'Cnemidophorus', 'tigris', 'Reptile')
+('CU', 'Cnemidophorus', 'uniparens', 'Reptile')
+('CV', 'Crotalus', 'viridis', 'Reptile')
+('DM', 'Dipodomys', 'merriami', 'Rodent')
+('DO', 'Dipodomys', 'ordii', 'Rodent')
+('DS', 'Dipodomys', 'spectabilis', 'Rodent')
+('DX', 'Dipodomys', 'sp.', 'Rodent')
+('EO', 'Eumeces', 'obsoletus', 'Reptile')
+('GS', 'Gambelia', 'silus', 'Reptile')
+('NL', 'Neotoma', 'albigula', 'Rodent')
+('NX', 'Neotoma', 'sp.', 'Rodent')
+('OL', 'Onychomys', 'leucogaster', 'Rodent')
+('OT', 'Onychomys', 'torridus', 'Rodent')
+('OX', 'Onychomys', 'sp.', 'Rodent')
+('PB', 'Chaetodipus', 'baileyi', 'Rodent')
+('PC', 'Pipilo', 'chlorurus', 'Bird')
+('PE', 'Peromyscus', 'eremicus', 'Rodent')
+('PF', 'Perognathus', 'flavus', 'Rodent')
+('PG', 'Pooecetes', 'gramineus', 'Bird')
+('PH', 'Perognathus', 'hispidus', 'Rodent')
+('PI', 'Chaetodipus', 'intermedius', 'Rodent')
+('PL', 'Peromyscus', 'leucopus', 'Rodent')
+('PM', 'Peromyscus', 'maniculatus', 'Rodent')
+('PP', 'Chaetodipus', 'penicillatus', 'Rodent')
+('PU', 'Pipilo', 'fuscus', 'Bird')
+('PX', 'Chaetodipus', 'sp.', 'Rodent')
+('RF', 'Reithrodontomys', 'fulvescens', 'Rodent')
+('RM', 'Reithrodontomys', 'megalotis', 'Rodent')
+('RO', 'Reithrodontomys', 'montanus', 'Rodent')
+('RX', 'Reithrodontomys', 'sp.', 'Rodent')
+('SA', 'Sylvilagus', 'audubonii', 'Rabbit')
+('SB', 'Spizella', 'breweri', 'Bird')
+('SC', 'Sceloporus', 'clarki', 'Reptile')
+('SF', 'Sigmodon', 'fulviventer', 'Rodent')
+('SH', 'Sigmodon', 'hispidus', 'Rodent')
+('SO', 'Sigmodon', 'ochrognathus', 'Rodent')
+('SS', 'Spermophilus', 'spilosoma', 'Rodent')
+('ST', 'Spermophilus', 'tereticaudus', 'Rodent')
+('SU', 'Sceloporus', 'undulatus', 'Reptile')
+('SX', 'Sigmodon', 'sp.', 'Rodent')
+('UL', 'Lizard', 'sp.', 'Reptile')
+('UP', 'Pipilo', 'sp.', 'Bird')
+('UR', 'Rodent', 'sp.', 'Rodent')
+('US', 'Sparrow', 'sp.', 'Bird')
+('ZL', 'Zonotrichia', 'leucophrys', 'Bird')
+('ZM', 'Zenaida', 'macroura', 'Bird')
+import sqlite3
+
+#create a SQL connection
+con=sqlite3.connect('portal_mammals.sqlite')
+
+cur=con.cursor()
+
+#return all results of query
+cur.execute('SELECT plot_id from plots where plot_type="Control" ')
+print(cur.fetchall())
+
+#return first result of query
+cur.execute('Select species from species where taxa="Bird" ')
+print(cur.fetchone())
+
+#close connection
+con.close()
+[(2,), (4,), (8,), (11,), (12,), (14,), (17,), (22,)]
+('bilineata',)
+from pandas import DataFrame
+
+Cars = {
+    'Brand':['Honda', 'Toyota', 'Ford', 'Audi'],
+    'Price':[22000, 54000, 45000, 75000]
+}
+
+df4 = DataFrame(Cars,columns=['Brand', 'Price'])
+print(df4)
+    Brand  Price
+0   Honda  22000
+1  Toyota  54000
+2    Ford  45000
+3    Audi  75000
+import sqlite3
+
+conn=sqlite3.connect('Data.db')
+c=conn.cursor()
+c.execute('create table Cars_DS(Brand varchar(20), Price number)')
+conn.commit()
+df4.to_sql('Cars', conn, if_exists='replace', index=False)
+c.execute('select Brand, max(Price) from Cars;')
+<sqlite3.Cursor at 0x7fc100d47500>
+df4 = DataFrame(c.fetchall(), columns=['Brand', 'Price'])
+df4
+Brand	Price
+0	Audi	75000
